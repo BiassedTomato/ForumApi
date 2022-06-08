@@ -1,0 +1,29 @@
+﻿@model RolesEditModel
+
+<h1>Assign a moderator</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Administration" asp-action="AssignModerator">
+            <select asp-for="SelectedUserId"
+                    asp-items=@(new SelectList(Model.Users, "Id", "UserName"))>
+            </select>
+
+            <select asp-for="SelectedBoardId"
+                    asp-items=@(new SelectList(Model.Boards, "Id", "Name"))>
+            </select>
+            <input type="submit" />
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" asp-controller="Boards">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

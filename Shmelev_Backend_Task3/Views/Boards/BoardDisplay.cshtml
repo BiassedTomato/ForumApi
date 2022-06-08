@@ -1,0 +1,42 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model BoardViewModel
+
+<div>
+    <a class="btn btn-primary" asp-controller="Threads" asp-action="Create" asp-route-boardId=@Model.BoardId>New thread</a>
+    <table>
+        @for (int i = 0; i < Model.Threads.Count; i++)
+        {
+            var thread = @Model.Threads[i];
+            <tr>
+                <td>
+                    <h4>
+                        <a asp-action="Index" asp-controller="Threads" asp-route-threadId=@thread.Id>@thread.Name — @thread.Description</a>
+
+                    </h4>
+
+                    <h6>
+                        <span>
+                            @thread.Created.Date
+                            @if (@thread.Modified != null)
+                            {
+                                @Html.Raw($" (mod. {@thread.Modified})")
+                            }
+
+                        </span>
+                    </h6>
+
+
+                    <a asp-action="Edit" asp-controller="Threads" asp-route-threadId=@thread.Id class="btn Button btn-info">Edit</a>
+                    <a asp-action="Delete" asp-controller="Threads" asp-route-threadId=@thread.Id class="btn Button btn-danger">Delete</a>
+
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>

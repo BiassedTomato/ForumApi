@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@model ThreadViewModel
+@inject IWebHostEnvironment env
+@inject IUserService usr
+
+<div>
+    <a class="btn btn-primary" asp-controller="Posts" asp-action="Create" asp-route-threadId=@Model.ThreadId>New post</a>
+    <table style="border:1px solid black;">
+
+        @for (int i = 0; i < Model.Posts.Count; i++)
+        {
+            var post = Model.Posts[i];
+
+
+            <tr>
+                <td style="border:1px solid black;">
+                    <a>@post.Text</a>
+
+                    @if (post.Attachments != null)
+                    {
+
+                        @foreach (var attachment in post.Attachments)
+                        {
+                            if (attachment.FileName.EndsWith(".png") || attachment.FileName.EndsWith(".jpg"))
+                            {
+                                <img src=@(attachment.FilePath.Replace(@env.WebRootPath,"")) style="max-width:200px;">
+                            }
+                            else
+                            {
+                                <a href=@(attachment.FilePath) download=@(attachment.FileName)>@attachment.FileName</a>
+                            }
+                        }
+                    }
+
+                    @if (@post.AuthorId == await usr.GetUserId(Context.User))
+                    {
+                        <a asp-action="Edit" asp-route-postId=@post.Id asp-controller="Posts" class="btn Button btn-info">Edit</a> <a asp-action="Delete" asp-controller="Posts" asp-route-postId=@post.Id class="btn Button btn-danger">X</a>
+                    }
+                </td>
+
+            </tr>
+
+        }
+
+    </table>
+</div>
